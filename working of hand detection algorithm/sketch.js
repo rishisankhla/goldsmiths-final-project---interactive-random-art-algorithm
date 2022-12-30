@@ -1,4 +1,7 @@
 //working of hand detection algorithm
+//took help from https://learn.ml5js.org/#/reference/handpose?id=config
+//took help from https://learn.ml5js.org/#/
+//took help from https://makeabilitylab.github.io/physcomp/communication/handpose-serial.html
 
 var hand_detection;
 var video;
