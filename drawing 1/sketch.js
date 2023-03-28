@@ -2,38 +2,52 @@
 //var p_array = [];
 //var num_it = 1000;
 //function art_1
+
 //function art_2
 //var art_2_form = [];
 //var num_rect = 100;
 //function art_2
-var lin_a = [];
-num_line = 1;
 
+//function art_3
+//var lin_a = [];
+//num_line = 1;
+//function art_3
+
+//function art_4
+//var draw_art;
+//function art_4
 
 function setup() {
   createCanvas(800, 800);
 //  pixelDensity(1);
+//  angleMode(DEGREES);
     
     //function art_1
 //    for(var i=0;i<num_it;i++){
 //        p_array.push(new art_1());
 //    }
     //function art_1
+    
     //function art_2
 //    for(var i=0;i<num_rect;i++){
 //        art_2_form.push(new art_2());
 //    }
     //function art_2
-//    angleMode(DEGREES);
+
+    //function art_3
+//    for(var i=0;i<num_line;i++){
+//        lin_a.push(new art_3());
+//    }
+    //function art_3
     
-    for(var i=0;i<num_line;i++){
-        lin_a.push(new art_3());
-    }
-    
+    //function art_4
+//    draw_art = new art_4();
+//    draw_art.setup();
+    //function art_4
 }
 
 function draw() {
-  background(255, 10);
+//  background(255, 10);
     
     //function art_1
 //    for(var i=0;i<p_array.length;i++){
@@ -42,6 +56,7 @@ function draw() {
 //        p.move();
 //    }
     //function art_1
+    
     //function art_2
 //    for(var i=0;i<art_2_form.length;i++){
 //        var q = art_2_form[i];
@@ -50,12 +65,16 @@ function draw() {
 //    }
     //function art_2
     
-    for(var i=0;i<lin_a.length;i++){
-        var r = lin_a[i];
-        r.draw(width/2,height/2);
-    }
+    //function art_3
+//    for(var i=0;i<lin_a.length;i++){
+//        var r = lin_a[i];
+//        r.draw(width/2,height/2);
+//    }
+    //function art_3
     
-    
+    //function art_4
+//    draw_art.draw(mouseX,mouseY); //don't need any background with this
+    //function art_4
 }
 
 function art_1(){
@@ -160,9 +179,8 @@ function art_2(){
 }
 
 function art_3(){
-    this.x=0;
-    this.y=0;
-    
+//    this.x=0;
+//    this.y=0;
     this.number_of_l = 100;
     this.line_gap = 0.7;
     this.line_dis = 10;
@@ -203,7 +221,24 @@ function art_3(){
     }
 }
 
-
+function art_4(){
+    this.el_size = 10;
+    this.colorPicker;
+    
+    this.setup = function(){
+        this.colorPicker = createColorPicker('#ff0000');
+        this.colorPicker.position(0, 50);
+    }
+    
+    
+    this.draw = function(x,y){
+        push();
+        noStroke();
+        fill(this.colorPicker.color()); 
+        ellipse(x,y,this.el_size,this.el_size);
+        pop();
+    }
+}
 
 
 
