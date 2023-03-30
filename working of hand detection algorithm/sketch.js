@@ -1,3 +1,6 @@
+var hand_detection;
+var video;
+var points_array =[];
 
 function setup() {
     
