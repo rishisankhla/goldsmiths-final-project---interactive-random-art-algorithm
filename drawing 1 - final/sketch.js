@@ -2,7 +2,8 @@
 var hand_detection;
 var video;
 var points_array =[];
-
+var video_button;
+var video_state;
 
 //function art_1
 var p_array = [];
@@ -16,20 +17,25 @@ var num_rect = 100;
 
 //function art_3
 var lin_a = [];
-num_line = 1;
-
+var num_line = 0;
+var slider2;
+var slider3;
+var slider4;
+var colorPicker1;
 
 //function art_4
 var draw_art;
-
+var slider1;
+var art_4_mouse_state;
 
 //function art_5
 var color_circle;
-var art_5_change_color;
+
 var art_5_change_size;
 var art_5_movement_x;
 var art_5_movement_y;
-
+var slider5;
+var slider6;
 
 //extra functionality
 var state_change;
@@ -39,6 +45,14 @@ var button2;
 var button3;
 var button4;
 var button5;
+
+
+
+
+var slider7;
+var slider8;
+var slider9;
+
 
 
 function setup() {
@@ -59,19 +73,39 @@ function setup() {
     
 
     //function art_3
+    slider2 = createSlider(0.1, 1, 0.5,0.1);
+    slider2.position(20, 680);
+    slider2.style('width', '80px');
+    slider3 = createSlider(1, 10, 3,1);
+    slider3.position(20, 700);
+    slider3.style('width', '80px');
+    slider4 = createSlider(75, 200, 100,1);
+    slider4.position(20, 720);
+    slider4.style('width', '80px');
+    colorPicker1= createColorPicker('#ff0000');
+    colorPicker1.position(20, 740);
     for(var i=0;i<num_line;i++){
         lin_a.push(new art_3());
     }
     
     
     //function art_4
+    art_4_mouse_state=false;
+    slider1 = createSlider(10, 50, 10);
+    slider1.position(20, 610);
+    slider1.style('width', '80px');
     draw_art = new art_4();
     draw_art.setup();
     
     
     //function art_5
+    slider5 = createSlider(15, 50, 15,1);
+    slider5.position(260, 610);
+    slider5.style('width', '80px');
+    slider6 = createSlider(0, 5, 1,1);
+    slider6.position(260, 630);
+    slider6.style('width', '80px');
     art_5_change_size=50;
-    art_5_change_color=3;
     color_circle = new art_5();
     
     
@@ -97,6 +131,7 @@ function setup() {
     button0.mousePressed(for_b0);
     
     
+    
     //video functions
     video = createCapture(VIDEO);
     video.size(640, 480);
@@ -107,7 +142,10 @@ function setup() {
     points_array = results;
     });
     video.hide();
-    
+    video_state=false;
+    video_button = createButton("plain video");
+    video_button.position(560, 580);
+    video_button.mousePressed(for_vo);
      
     
 }
@@ -135,17 +173,44 @@ function draw() {
     
     //function art_5
     art_5_calling(state_change);
-//    console.log(art_5_change_size);
+
     
     
     
     //video functions
-    image(video, 0, 0, 640, 480);
+    if(video_state){
+        image(video, 0, 0, 640, 480);
+        drawpoints();
+    }
+  
 
-    drawpoints();
-    
-    
+}
 
+function mousePressed() {
+    if(state_change==4){
+        art_4_mouse_state=true;
+    }
+    if(state_change==3){
+        var new_art_3 = new art_3();
+        new_art_3.x=mouseX;
+        new_art_3.y=mouseY;
+        lin_a.push(new_art_3);
+        
+    }
+    if(state_change==2){
+        
+    }
+
+}
+
+function mouseReleased() {
+    if(state_change==4){
+        art_4_mouse_state=false;
+    }
+    if(state_change==3){
+
+    }
+  
 }
 
 function art_1_calling(ap_1){
@@ -173,21 +238,20 @@ function art_3_calling(ap_3){
         background(255,10);
         for(var i=0;i<lin_a.length;i++){
         var r = lin_a[i];
-        r.draw(width/2,height/2);
+        r.draw();
     }
     }
         
 }
 function art_4_calling(ap_4){
-    if(ap_4==4){
-    draw_art.draw(mouseX,mouseY);
-    }//don't need any background with this
+    if(ap_4==4 && art_4_mouse_state){
+    draw_art.draw(mouseX,mouseY);//don't need any background with this
+    }
 }
 function art_5_calling(ap_5){
     if(ap_5==5){
         background(255, 10);
         color_circle.draw(mouseX,mouseY);
-//        color_circle.size_c = art_5_change_size;
     }
 }
 function art_0_calling(ap_0){
@@ -195,7 +259,9 @@ function art_0_calling(ap_0){
         background(255, 255,255);
     }
 }
-
+function for_vo(){
+    video_state=!video_state;
+}
 
 
 function art_1(){
@@ -300,14 +366,14 @@ function art_2(){
 }
 
 function art_3(){
-//    this.x=0;
-//    this.y=0;
-    this.number_of_l = 100;
-    this.line_gap = 0.7;
+    this.x=0;
+    this.y=0;
+    this.number_of_l = slider4.value();
+    this.line_gap = slider2.value();
     this.line_dis = 10;
     this.line_h=50;
-    this.strokeWeight = 3;
-    this.line_color = [200, 100, 100];
+    this.strokeWeight = slider3.value();
+    this.line_color = colorPicker1.color();
     
     function single_line(x_s,y_s,lin_h,d_n,
                           line_dis,s_w,line_color){
@@ -320,11 +386,12 @@ function art_3(){
         line(line_dis,line_dis,lin_h,lin_h);
         pop();
     }
-    this.draw = function(x,y){
+    this.draw = function(){
+        
         push();
         for(var i=0;i<this.number_of_l;i++){
             
-            single_line(x,y,this.line_h+(i*this.line_gap),
+            single_line(this.x,this.y,this.line_h+(i*this.line_gap),
                         this.number_of_l/((i+1)+(i*this.line_gap)),
                         this.line_dis+(i*this.line_gap),
                         this.strokeWeight,this.line_color);
@@ -343,16 +410,17 @@ function art_3(){
 }
 
 function art_4(){
-    this.el_size = 10;
+    this.el_size = slider1.value();
     this.colorPicker;
     
     this.setup = function(){
         this.colorPicker = createColorPicker('#ff0000');
-        this.colorPicker.position(0, 50);
+        this.colorPicker.position(20, 640);
     }
     
     
     this.draw = function(x,y){
+        this.el_size = slider1.value();
         push();
         noStroke();
         fill(this.colorPicker.color()); 
@@ -363,8 +431,8 @@ function art_4(){
 
 function art_5(){
     
-    this.size_c = art_5_change_size;
-    this.color_trip = art_5_change_color;
+    this.size_c = slider5.value();
+    this.color_trip = slider6.value();
     this.color_trip_array = [];
     this.num_c = round(width/this.size_c)*round(height/this.size_c);
     
@@ -379,7 +447,8 @@ function art_5(){
     
     
     this.draw = function(m_x1,m_y1){
-        
+        this.size_c = slider5.value();
+        this.color_trip = slider6.value();
         var c_array = [];
         for(var w=1;w<=this.num_c;w++){
             c_array.push(new art_5_mini());
@@ -468,7 +537,7 @@ function drawpoints() {
                                     c_key_point_array[4].x,c_key_point_array[4].y);
 //                console.log(common_d1);
                 var our_m1 = map(common_d1,13,170,10,50);
-                art_5_change_size=our_m1;
+//                art_5_change_size=our_m1;
                 
 //                console.log(our_m1);
                 
@@ -506,6 +575,7 @@ function modelReady() {
 
 function for_b0(){
     state_change = 0;
+    lin_a = [];
 }
 function for_b1(){
     state_change = 1;
