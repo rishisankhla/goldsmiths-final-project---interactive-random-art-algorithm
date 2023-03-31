@@ -8,12 +8,16 @@ var video_state;
 //function art_1
 var p_array = [];
 var num_it = 1000;
+var slider7;
+var slider8;
+var slider9;
 
 
 //function art_2
 var art_2_form = [];
 var num_rect = 100;
-
+var slider10;
+var slider11;
 
 //function art_3
 var lin_a = [];
@@ -30,8 +34,6 @@ var art_4_mouse_state;
 
 //function art_5
 var color_circle;
-
-var art_5_change_size;
 var art_5_movement_x;
 var art_5_movement_y;
 var slider5;
@@ -45,15 +47,7 @@ var button2;
 var button3;
 var button4;
 var button5;
-
-
-
-
-var slider7;
-var slider8;
-var slider9;
-
-
+var savebutton;
 
 function setup() {
   createCanvas(1800, 800);
@@ -61,12 +55,27 @@ function setup() {
 //  angleMode(DEGREES);
     
     //function art_1
+    slider7 = createSlider(0.01, 0.1, 0.01,0.01);
+    slider7.position(260, 650);
+    slider7.style('width', '80px');
+    slider8 = createSlider(3, 10, 3,1);
+    slider8.position(260, 670);
+    slider8.style('width', '80px');
+    slider9 = createSlider(500, 1500, 1000,50);
+    slider9.position(260, 690);
+    slider9.style('width', '80px');
     for(var i=0;i<num_it;i++){
         p_array.push(new art_1());
     }
     
     
     //function art_2
+    slider10 = createSlider(5, 20, 6,1);
+    slider10.position(260, 710);
+    slider10.style('width', '80px');
+    slider11 = createSlider(75, 150, 100,1);
+    slider11.position(260, 730);
+    slider11.style('width', '80px');
     for(var i=0;i<num_rect;i++){
         art_2_form.push(new art_2());
     }
@@ -105,7 +114,7 @@ function setup() {
     slider6 = createSlider(0, 5, 1,1);
     slider6.position(260, 630);
     slider6.style('width', '80px');
-    art_5_change_size=50;
+    
     color_circle = new art_5();
     
     
@@ -129,19 +138,22 @@ function setup() {
     button0 = createButton("plain background");
     button0.position(420, 580);
     button0.mousePressed(for_b0);
+    savebutton = createButton("save button");
+    savebutton.position(260, 780);
+    savebutton.mousePressed();
     
     
     
     //video functions
-    video = createCapture(VIDEO);
-    video.size(640, 480);
-
-    hand_detection = ml5.handpose(video, modelReady);
-
-    hand_detection.on("hand", results => {
-    points_array = results;
-    });
-    video.hide();
+//    video = createCapture(VIDEO);
+//    video.size(640, 480);
+//
+//    hand_detection = ml5.handpose(video, modelReady);
+//
+//    hand_detection.on("hand", results => {
+//    points_array = results;
+//    });
+//    video.hide();
     video_state=false;
     video_button = createButton("plain video");
     video_button.position(560, 580);
@@ -175,15 +187,12 @@ function draw() {
     art_5_calling(state_change);
 
     
-    
-    
     //video functions
     if(video_state){
         image(video, 0, 0, 640, 480);
         drawpoints();
     }
-  
-
+    
 }
 
 function mousePressed() {
@@ -210,7 +219,40 @@ function mouseReleased() {
     if(state_change==3){
 
     }
-  
+    
+    if(state_change==2){
+        if(art_2_form.length < slider11.value()){
+            num_rect=art_2_form.length;
+            for(var i=0;i<slider11.value()-num_rect;i++){
+                art_2_form.push(new art_2());
+            }
+            num_rect=art_2_form.length;
+        }
+        if(art_2_form.length > slider11.value()){
+            num_rect=art_2_form.length;
+            for(var i=0;i<num_rect-slider11.value();i++){
+                art_2_form.splice(0, 1);
+            }
+            num_rect=art_2_form.length;
+        }
+    }
+    
+    if(state_change==1){
+        if(p_array.length < slider9.value()){
+            num_it=p_array.length;
+            for(var i=0;i<slider9.value()-num_it;i++){
+                p_array.push(new art_1());
+            }
+            num_it=p_array.length;
+        }
+        if(p_array.length > slider9.value()){
+            num_it=p_array.length;
+            for(var i=0;i<num_it-slider9.value();i++){
+                p_array.splice(0, 1);
+            }
+            num_it=p_array.length;
+        }
+    }
 }
 
 function art_1_calling(ap_1){
@@ -262,252 +304,6 @@ function art_0_calling(ap_0){
 function for_vo(){
     video_state=!video_state;
 }
-
-
-function art_1(){
-    this.x=random(0,width);
-    this.y=random(0,height);
-    this.r_color=[random(0,255),random(0,255),random(0,255)];
-    this.size_e = 3;
-    this.moving_speed = 0.01;
-    this.moving_speed_new = 1;
-    this.switch_gate_x = 0;
-    this.switch_gate_y = 0;
-    
-    this.draw = function(){
-        push();
-//        stroke('white');
-        noStroke();
-//        strokeWeight(5);
-        fill(this.r_color);
-        ellipse(this.x,this.y,this.size_e,this.size_e);
-        pop();
-    }
-    
-    this.move = function(){
-
-        
-        var n1 = noise(this.x*this.moving_speed,this.y*this.moving_speed,frameCount*this.moving_speed);
-
-        var a1 = TAU * n1;
-        if(this.switch_gate_x == 0){
-            this.x=this.x-(sin(a1)+this.moving_speed_new);
-        }
-        else if(this.switch_gate_x == 1){
-            this.x=this.x+(sin(a1)+this.moving_speed_new);
-        }
-        if(this.x>width){
-            this.switch_gate_x = 0;
-        }
-        else if(this.x<0){
-            this.switch_gate_x = 1;
-        }
-        
-        if(this.switch_gate_y == 0){
-            this.y=this.y-(cos(a1)+this.moving_speed_new);
-        }
-        else if(this.switch_gate_y == 1){
-            this.y=this.y+(cos(a1)+this.moving_speed_new);
-        }
-        if(this.y>height){
-            this.switch_gate_y = 0;
-        }
-        else if(this.y<0){
-            this.switch_gate_y = 1;
-        }
-     
-    }
-}
-
-function art_2(){
-    
-    this.x=random(0,width+100);
-    this.y=random(0,height+100);
-    this.alpha_r=6;
-    this.r_color=[random(0,255),random(0,255),random(0,255),random(0,this.alpha_r)];
-    this.h = random(0,500);
-    this.w = random(0,500);
-    this.r = random();
-    
-    this.draw = function(){
-        
-        
-        push();
-        
-        noStroke();
-        if(this.r<0.5){
-            blendMode(HARD_LIGHT);
-        }
-        else{
-            blendMode(BLEND);
-        }
-        
-        fill(this.r_color);
-        
-        rect(this.x,this.y,this.h,this.w);
-        pop();
-  
-        
-    }
-    
-    this.move = function(x_m,y_m){
-        var d = dist(this.x,this.y,x_m,y_m);
-        if(d<200){
-            this.x=this.x+random(-100,100);
-            this.y=this.y+random(-100,100);
-        }
-        if(this.x<0 || this.x>(width+100)){
-            this.x=random(0,width+100);
-        }
-        if(this.y<0 || this.y>(height+100)){
-           this.y=random(0,height+100);
-           }
-    }
-}
-
-function art_3(){
-    this.x=0;
-    this.y=0;
-    this.number_of_l = slider4.value();
-    this.line_gap = slider2.value();
-    this.line_dis = 10;
-    this.line_h=50;
-    this.strokeWeight = slider3.value();
-    this.line_color = colorPicker1.color();
-    
-    function single_line(x_s,y_s,lin_h,d_n,
-                          line_dis,s_w,line_color){
-        push();
-        strokeWeight(s_w);
-        stroke(line_color);
-        
-        translate(x_s,y_s);
-        rotate((2*PI)/d_n);
-        line(line_dis,line_dis,lin_h,lin_h);
-        pop();
-    }
-    this.draw = function(){
-        
-        push();
-        for(var i=0;i<this.number_of_l;i++){
-            
-            single_line(this.x,this.y,this.line_h+(i*this.line_gap),
-                        this.number_of_l/((i+1)+(i*this.line_gap)),
-                        this.line_dis+(i*this.line_gap),
-                        this.strokeWeight,this.line_color);
-        }
-        pop();
-        
-        
-//        single_line(x,y,this.line_h,6/2,this.line_dis);
-//        
-//        single_line(x,y,this.line_h,6/3,this.line_dis);
-//        single_line(x,y,this.line_h,6/4,this.line_dis);
-//        single_line(x,y,this.line_h,6/5,this.line_dis);
-//        single_line(x,y,this.line_h,6/6,this.line_dis);
-        
-    }
-}
-
-function art_4(){
-    this.el_size = slider1.value();
-    this.colorPicker;
-    
-    this.setup = function(){
-        this.colorPicker = createColorPicker('#ff0000');
-        this.colorPicker.position(20, 640);
-    }
-    
-    
-    this.draw = function(x,y){
-        this.el_size = slider1.value();
-        push();
-        noStroke();
-        fill(this.colorPicker.color()); 
-        ellipse(x,y,this.el_size,this.el_size);
-        pop();
-    }
-}
-
-function art_5(){
-    
-    this.size_c = slider5.value();
-    this.color_trip = slider6.value();
-    this.color_trip_array = [];
-    this.num_c = round(width/this.size_c)*round(height/this.size_c);
-    
-    function single_circle(x,y,size_c,fill_c){
-        push();
-        noStroke();
-        fill(fill_c);
-        ellipse(x,y,size_c,size_c);
-        pop();
-    }
-    
-    
-    
-    this.draw = function(m_x1,m_y1){
-        this.size_c = slider5.value();
-        this.color_trip = slider6.value();
-        var c_array = [];
-        for(var w=1;w<=this.num_c;w++){
-            c_array.push(new art_5_mini());
-        }
-        for(var s=0;s<c_array.length;s++){
-            c_array[s].select_number(s+1);
-        }
-        var c=0;
-        for(var i=0;i<round(width/this.size_c);i++){
-            
-            var x = this.size_c*(i%round(width/this.size_c));
-            var m1 = map(i,0,round(width/this.size_c),0,255);
-            
-            for(var p=0;p<round(height/this.size_c);p++){
-                
-                var y = this.size_c*(p%round(height/this.size_c));
-                var m2 = map(p,0,round(height/this.size_c),0,255);
-                var single_element = c_array[c];
-                single_element.x=x;
-                single_element.y=y;
-                var d =single_element.cal_dis(m_x1,m_y1);
-                var cal_di = sqrt(sq(width)+sq(height));
-                var m3 = map(d,0,cal_di,0,255);
-                this.color_trip_array = [];
-                this.color_trip_array.push([m1,m2,m3]);
-                this.color_trip_array.push([m1,m3,m2]);
-                this.color_trip_array.push([m2,m3,m1]);
-                this.color_trip_array.push([m2,m1,m3]);
-                this.color_trip_array.push([m3,m2,m1]);
-                this.color_trip_array.push([m3,m1,m2]);
-                single_element.single_circle(this.size_c,
-                                this.color_trip_array[this.color_trip]);
-                c=c+1;
-            }
-        }     
-    }
-}
-
-function art_5_mini(){
-    this.circle_number = 0;
-    this.x=0;
-    this.y=0;
-    this.select_number = function(a){
-        this.circle_number = a;
-    }
-    this.single_circle = function(size_c,fill_c){
-        
-        push();
-        noStroke();
-        fill(fill_c);
-        ellipse(this.x,this.y,size_c,size_c);
-        pop();
-    }
-    this.cal_dis = function(m_x,m_y){
-        var d =dist(this.x,this.y,m_x,m_y);
-        return d;
-    }
-}
-
 
 
 
