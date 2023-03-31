@@ -6,16 +6,7 @@ function art_5(){
     this.color_trip = slider6.value();
     this.color_trip_array = [];
     this.num_c = round(width/this.size_c)*round(height/this.size_c);
-    
-    function single_circle(x,y,size_c,fill_c){
-        push();
-        noStroke();
-        fill(fill_c);
-        ellipse(x,y,size_c,size_c);
-        pop();
-    }
 
-    
     this.draw = function(m_x1,m_y1){
         this.size_c = slider5.value();
         this.color_trip = slider6.value();

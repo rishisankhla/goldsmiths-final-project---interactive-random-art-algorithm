@@ -301,6 +301,7 @@ function art_0_calling(ap_0){
         background(255, 255,255);
     }
 }
+
 function for_vo(){
     video_state=!video_state;
 }
@@ -331,11 +332,7 @@ function drawpoints() {
                 }
                 var common_d1 = dist(c_key_point_array[8].x,c_key_point_array[8].y,
                                     c_key_point_array[4].x,c_key_point_array[4].y);
-//                console.log(common_d1);
                 var our_m1 = map(common_d1,13,170,10,50);
-//                art_5_change_size=our_m1;
-                
-//                console.log(our_m1);
                 
             }
             else{
@@ -347,23 +344,6 @@ function drawpoints() {
     }
 }
 
-function key_point(x,y,s_n){
-    this.x=x;
-    this.y=y;
-    this.select_num=s_n;
-    this.draw = function(){
-        push();
-        fill(0, 255, 0);
-        noStroke();
-        ellipse(this.x, this.y, 15, 15);
-        push();
-        fill(255);
-        textSize(15);
-        text(this.select_num.toString(), this.x, this.y);
-        pop();
-        pop();
-    }
-}
 
 function modelReady() {
   console.log("Model is working");
