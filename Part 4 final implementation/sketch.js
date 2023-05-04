@@ -48,6 +48,8 @@ var button3;
 var button4;
 var button5;
 var savebutton;
+var slider_save_d;
+var slider_save_b;
 
 //setup function
 function setup() {
@@ -139,17 +141,19 @@ function setup() {
     savebutton = createButton("save button");
     savebutton.position(260, 780);
     savebutton.mousePressed(for_b_save);
-    
-    
+    slider_save_d={pt1:0,pt2:0,pt3:0,pt4:0,pt5:0};
+    slider_save_b=createButton("save slider state");
+    slider_save_b.position(360, 780);
+    slider_save_b.mousePressed(for_slider_save);
     
     //video functions
-//    video = createCapture(VIDEO);
-//    video.size(640, 480);
-//    hand_detection = ml5.handpose(video, modelReady);
-//    hand_detection.on("hand", results => {
-//    points_array = results;
-//    });
-//    video.hide();
+    video = createCapture(VIDEO);
+    video.size(640, 480);
+    hand_detection = ml5.handpose(video, modelReady);
+    hand_detection.on("hand", results => {
+    points_array = results;
+    });
+    video.hide();
     video_state=false;
     video_button = createButton("plain video");
     video_button.position(560, 580);
@@ -191,7 +195,8 @@ function draw() {
     }
     
     //creating labels
-    create_label("text",600,600);
+    create_all_labels();
+    
     
 }
 
@@ -335,6 +340,42 @@ function drawpoints() {
                                     c_key_point_array[4].x,c_key_point_array[4].y);
                 var our_m1 = map(common_d1,13,170,10,50);
             }
+            else if(state_change==1){
+                if(slider_save_d['pt1']==0){
+                   if(s_e.select_num==9){
+                        s_e.draw();
+    //                    console.log(s_e.x);
+                        var our_m1 = map(s_e.x,0,640,0.01,0.1);
+                        slider7.value(our_m1);
+
+                    }
+                }
+                else if(slider_save_d['pt1']==1){
+                    if(s_e.select_num==9){
+                        s_e.draw();
+                        var our_m1 = map(s_e.y,0,480,3, 10);
+                        slider8.value(our_m1);
+                    }
+                }
+                else if(slider_save_d['pt1']==2){
+                    if(s_e.select_num==9){
+                        s_e.draw();
+                        var our_m1 = dist(s_e.x,s_e.y,(640/2),(480/2));
+                        var our_m2 = map(our_m1,0,(690/2),500, 1500);
+                        slider9.value(our_m2);
+                    }
+                }
+                
+            }
+//            else if(state_change==1){
+//                
+//            }
+//            else if(state_change==1){
+//                
+//            }
+//            else if(state_change==1){
+//                
+//            }
             else{
                 s_e.draw();
             }
@@ -356,26 +397,31 @@ function for_b0(){
 // function for button 1
 function for_b1(){
     state_change = 1;
+    slider_save_d['pt1']=0;
 }
 
 // function for button 2
 function for_b2(){
     state_change = 2;
+    slider_save_d['pt2']=0;
 }
 
 // function for button 3
 function for_b3(){
     state_change = 3;
+    slider_save_d['pt3']=0;
 }
 
 // function for button 4
 function for_b4(){
     state_change = 4;
+    slider_save_d['pt4']=0;
 }
 
 // function for button 5
 function for_b5(){
     state_change = 5;
+    slider_save_d['pt5']=0;
 }
 
 // function for save button 
@@ -389,16 +435,52 @@ function for_vo(){
     video_state=!video_state;
 }
 
+// function for slider save
+function for_slider_save(){
+    if(state_change==1){
+        slider_save_d['pt1']+=1;
+    }
+    else if(state_change==2){
+        slider_save_d['pt2']+=1;
+    }
+    else if(state_change==3){
+        slider_save_d['pt3']+=1;
+    }
+    else if(state_change==4){
+        slider_save_d['pt4']+=1;
+    }
+    else if(state_change==5){
+        slider_save_d['pt5']+=1;
+    }
+}
+
 //label create function
-function create_label(text,x,y){
+function create_label(text1,x,y,s){
     push();
-    textSize(32);
+    textSize(s);
+    strokeWeight(5);
+    stroke(255);
     fill(0, 102, 153);
-    text(text, x, y);
+    text(text1, x, y);
     pop();
 }
 
-
+function create_all_labels(){
+    create_label("=  pattern 5 p_1",350,558,15);
+    create_label("=  pattern 5 p_2",350,578,15);
+    create_label("=  pattern 1 p_1",350,598,15);
+    create_label("=  pattern 1 p_2",350,618,15);
+    create_label("=  pattern 1 p_3",350,638,15);
+    create_label("=  pattern 2 p_1",350,658,15);
+    create_label("=  pattern 2 p_2",350,678,15);
+    create_label("=  pattern 4 p_1",110,558,15);
+    create_label("=  pattern 4 p_2",110,588,15);
+    create_label("=  pattern 3 p_1",110,628,15);
+    create_label("=  pattern 3 p_2",110,648,15);
+    create_label("=  pattern 3 p_3",110,668,15);
+    create_label("=  pattern 3 p_4",110,695,15);
+    
+}
 
 
 
