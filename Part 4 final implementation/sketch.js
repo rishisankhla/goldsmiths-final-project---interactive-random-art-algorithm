@@ -12,7 +12,6 @@ var slider7;
 var slider8;
 var slider9;
 
-
 //function art_2
 var art_2_form = [];
 var num_rect = 100;
@@ -344,7 +343,6 @@ function drawpoints() {
                 }
                 var common_d1 = dist(c_key_point_array[8].x,c_key_point_array[8].y,
                                     c_key_point_array[4].x,c_key_point_array[4].y);
-//                console.log(common_d1);
                 if(slider_save_d['pt5']==0){
                     var our_m1 = map(common_d1,13,170,15,50);
                     slider5.value(our_m1);
@@ -360,7 +358,6 @@ function drawpoints() {
                 if(slider_save_d['pt1']==0){
                    if(s_e.select_num==9){
                         s_e.draw();
-    //                    console.log(s_e.x);
                         var our_m1 = map(s_e.x,0,640,0.01,0.1);
                         slider7.value(our_m1);
 
@@ -392,7 +389,6 @@ function drawpoints() {
                 }
                 var common_d1 = dist(c_key_point_array[11].x,c_key_point_array[11].y,
                                     c_key_point_array[7].x,c_key_point_array[7].y);
-//                console.log(common_d1);
                 if(slider_save_d['pt2']==0){
                     var our_m1 = map(common_d1,30,140,5, 20);
                     slider10.value(our_m1);
@@ -427,7 +423,20 @@ function drawpoints() {
                 
             }
             else if(state_change==4 && change_to_hand_state){
-                
+                if(s_e.select_num==13){
+                    s_e.draw();
+                }
+                if(s_e.select_num==1){
+                    s_e.draw();
+                }
+                var common_d1 = dist(c_key_point_array[12].x,c_key_point_array[12].y,
+                                    640/2,0);
+                var common_d2 = dist(c_key_point_array[0].x,c_key_point_array[0].y,
+                                    640/2,480);
+                if(slider_save_d['pt4']==0){
+                    var our_m1 = map(common_d1+common_d2,40,300,10, 50);
+                    slider1.value(our_m1);
+                }
             }
             else{
                 s_e.draw();
