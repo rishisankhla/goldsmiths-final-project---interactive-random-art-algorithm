@@ -4,14 +4,14 @@
 function art_5(){
     
     this.size_c = slider5.value();
-    this.color_trip = slider6.value();
+    this.color_trip = round(slider6.value());
     this.color_trip_array = [];
     this.num_c = round(width/this.size_c)*round(height/this.size_c);
 
     //draw function to draw the entire grid
     this.draw = function(m_x1,m_y1){
         this.size_c = slider5.value();
-        this.color_trip = slider6.value();
+        this.color_trip = round(slider6.value());
         var c_array = [];
         for(var w=1;w<=this.num_c;w++){
             c_array.push(new art_5_mini());

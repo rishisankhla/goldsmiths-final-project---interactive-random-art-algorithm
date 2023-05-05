@@ -50,6 +50,8 @@ var button5;
 var savebutton;
 var slider_save_d;
 var slider_save_b;
+var change_to_hand;
+var change_to_hand_state;
 
 //setup function
 function setup() {
@@ -145,6 +147,10 @@ function setup() {
     slider_save_b=createButton("save slider state");
     slider_save_b.position(360, 780);
     slider_save_b.mousePressed(for_slider_save);
+    change_to_hand=createButton("change by hand");
+    change_to_hand.position(490, 780);
+    change_to_hand.mousePressed(for_change_to_hand);
+    change_to_hand_state=false;
     
     //video functions
     video = createCapture(VIDEO);
@@ -329,7 +335,7 @@ function drawpoints() {
     
         for(var d=0;d<c_key_point_array.length;d++){
             var s_e = c_key_point_array[d];
-            if(state_change==5){
+            if(state_change==5 && change_to_hand_state){
                 if(s_e.select_num==9){
                     s_e.draw();
                 }
@@ -338,9 +344,19 @@ function drawpoints() {
                 }
                 var common_d1 = dist(c_key_point_array[8].x,c_key_point_array[8].y,
                                     c_key_point_array[4].x,c_key_point_array[4].y);
-                var our_m1 = map(common_d1,13,170,10,50);
+//                console.log(common_d1);
+                if(slider_save_d['pt5']==0){
+                    var our_m1 = map(common_d1,13,170,15,50);
+                    slider5.value(our_m1);
+                }
+                if(slider_save_d['pt5']==1){
+                    var our_m1 = map(common_d1,13,170,0,5);
+                    slider6.value(our_m1);
+                }
+                
+                
             }
-            else if(state_change==1){
+            else if(state_change==1 && change_to_hand_state){
                 if(slider_save_d['pt1']==0){
                    if(s_e.select_num==9){
                         s_e.draw();
@@ -367,15 +383,15 @@ function drawpoints() {
                 }
                 
             }
-//            else if(state_change==1){
-//                
-//            }
-//            else if(state_change==1){
-//                
-//            }
-//            else if(state_change==1){
-//                
-//            }
+            else if(state_change==2 && change_to_hand_state){
+                
+            }
+            else if(state_change==3 && change_to_hand_state){
+                
+            }
+            else if(state_change==4 && change_to_hand_state){
+                
+            }
             else{
                 s_e.draw();
             }
@@ -454,6 +470,11 @@ function for_slider_save(){
     }
 }
 
+//button function for for_change_to_hand
+function for_change_to_hand(){
+    change_to_hand_state=!change_to_hand_state;
+}
+
 //label create function
 function create_label(text1,x,y,s){
     push();
@@ -465,6 +486,7 @@ function create_label(text1,x,y,s){
     pop();
 }
 
+//creating single labels
 function create_all_labels(){
     create_label("=  pattern 5 p_1",350,558,15);
     create_label("=  pattern 5 p_2",350,578,15);
