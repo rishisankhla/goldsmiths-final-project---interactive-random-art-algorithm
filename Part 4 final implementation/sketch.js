@@ -387,6 +387,27 @@ function drawpoints() {
                 
             }
             else if(state_change==3 && change_to_hand_state){
+                if(s_e.select_num==21){
+                    s_e.draw();
+                }
+                if(s_e.select_num==5){
+                    s_e.draw();
+                }
+                var common_d1 = dist(c_key_point_array[20].x,c_key_point_array[20].y,
+                                    c_key_point_array[4].x,c_key_point_array[4].y);
+                if(slider_save_d['pt3']==0){
+                    var our_m1 = map(common_d1,13,200,0.1, 1);
+                    slider2.value(our_m1);
+                }
+                if(slider_save_d['pt3']==1){
+                    var our_m1 = map(common_d1,13,200,1,10);
+                    slider3.value(our_m1);
+                }
+                if(slider_save_d['pt3']==2){
+                    var our_m1 = map(common_d1,13,200,75, 200);
+                    slider4.value(our_m1);
+                }
+                
                 
             }
             else if(state_change==4 && change_to_hand_state){

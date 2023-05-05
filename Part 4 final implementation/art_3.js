@@ -4,7 +4,7 @@
 function art_3(){
     this.x=0;
     this.y=0;
-    this.number_of_l = slider4.value();
+    this.number_of_l = round(slider4.value());
     this.line_gap = slider2.value();
     this.line_dis = 10;
     this.line_h=50;
